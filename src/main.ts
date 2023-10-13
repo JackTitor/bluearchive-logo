@@ -1,9 +1,9 @@
 import './style.css';
 import LogoCanvas from './canvas';
-import loadImages from './utils/loadImages';
+import loadSVGs from './utils/loadSVGs';
 
 (async function () {
-  await loadImages();
+  await loadSVGs();
   const logo = new LogoCanvas();
   logo.draw();
 })();
