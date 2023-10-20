@@ -5,6 +5,7 @@ const {
   canvasHeight,
   canvasWidth,
   fontSize,
+  subtitleFontSize,
   horizontalTilt,
   textBaseLine,
   graphOffset,
@@ -12,18 +13,22 @@ const {
   hollowPath,
 } = settings;
 const font = `${fontSize}px RoGSanSrfStd-Bd`;
+const subtitleFont = `${subtitleFontSize}px RoGSanSrfStd-Bd`;
 
 export default class LogoCanvas {
   public canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
   public textL = 'Blue';
   public textR = 'Archive';
+  public subtitle = '';
   private textMetricsL: TextMetrics | null = null;
   private textMetricsR: TextMetrics | null = null;
+  private textMetricsST: TextMetrics | null = null;
   private canvasWidthL = canvasWidth / 2;
   private canvasWidthR = canvasWidth / 2;
   private textWidthL = 0;
   private textWidthR = 0;
+  private textWidthST = 0;
   private graphOffset = graphOffset;
   private accentColor = '#128AFA';
   private transparentBg = false;
@@ -46,11 +51,12 @@ export default class LogoCanvas {
     loading.classList.remove('hidden');
     const c = this.ctx;
     //predict canvas width
-    await loadFont(this.textL + this.textR);
+    await loadFont(this.textL + this.textR + this.subtitle);
     loading.classList.add('hidden');
     c.font = font;
     this.textMetricsL = c.measureText(this.textL);
     this.textMetricsR = c.measureText(this.textR);
+    this.textMetricsST = c.measureText(this.subtitle);
     this.setWidth();
     //clear canvas
     c.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -67,8 +73,8 @@ export default class LogoCanvas {
       c.moveTo(this.canvasWidthL, 0);
       c.lineTo(this.canvasWidthL, this.canvas.height);
       c.stroke();
-      console.log(this.textMetricsL.width, this.textMetricsR.width);
-      console.log(this.textWidthL, this.textWidthR);
+      console.log(this.textMetricsL.width, this.textMetricsR.width, this.textMetricsST.width);
+      console.log(this.textWidthL, this.textWidthR, this.textWidthST);
       c.moveTo(this.canvasWidthL - this.textWidthL, 0);
       c.lineTo(this.canvasWidthL - this.textWidthL, this.canvas.height);
       c.moveTo(this.canvasWidthL + this.textWidthR, 0);
@@ -102,6 +108,11 @@ export default class LogoCanvas {
     c.strokeText(this.textR, this.canvasWidthL, this.canvas.height * textBaseLine);
     c.globalCompositeOperation = 'source-over';
     c.fillText(this.textR, this.canvasWidthL, this.canvas.height * textBaseLine);
+    c.resetTransform();
+    c.font = subtitleFont;
+    c.setTransform(1, 0, horizontalTilt * 1, 1, 0, 0);
+    c.textAlign = 'end';
+    c.fillText(this.subtitle, this.canvasWidthL + this.textWidthR + subtitleFontSize, this.canvas.height * textBaseLine + subtitleFontSize + 5);
     c.resetTransform();
     const graph = {
       X: this.canvasWidthL - this.canvas.height / 2 + graphOffset.X,
@@ -148,12 +159,12 @@ export default class LogoCanvas {
     c.fill(path);
   }
   bindEvent() {
-    const process = (id: 'textL' | 'textR', el: HTMLInputElement) => {
+    const process = (id: 'textL' | 'textR' | 'subtitle', el: HTMLInputElement) => {
       this[id] = el.value;
       this.draw();
     };
-    for (const t of ['textL', 'textR']) {
-      const id = t as 'textL' | 'textR';
+    for (const t of ['textL', 'textR', 'subtitle']) {
+      const id = t as 'textL' | 'textR' | 'subtitle';
       const el = document.getElementById(id)! as HTMLInputElement;
       el.addEventListener('compositionstart', () => el.setAttribute('composing', ''));
       el.addEventListener('compositionend', () => {
