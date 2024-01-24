@@ -27,7 +27,6 @@ export default class LogoCanvas {
   private graphOffset = graphOffset;
   private accentColor = '#128AFA';
   private transparentBg = false;
-  private swapColors = false;
   private darkMode = false;
   constructor() {
     this.canvas = document.querySelector('#canvas')!;
@@ -41,12 +40,6 @@ export default class LogoCanvas {
   }
   get textColor() {
     return this.darkMode ? '#fff' : '#2B2B2B';
-  }
-  get primaryColor() {
-    return this.swapColors ? this.textColor : this.accentColor;
-  }
-  get secondaryColor() {
-    return this.swapColors ? this.accentColor : this.textColor;
   }
   async draw() {
     const loading = document.querySelector('#loading')!;
@@ -84,7 +77,7 @@ export default class LogoCanvas {
     }
     //blue text -> halo -> black text -> cross
     c.font = font;
-    c.fillStyle = this.primaryColor;
+    c.fillStyle = this.textColor;
     c.textAlign = 'end';
     c.setTransform(1, 0, horizontalTilt, 1, 0, 0);
     c.fillText(this.textL, this.canvasWidthL, this.canvas.height * textBaseLine);
@@ -98,7 +91,7 @@ export default class LogoCanvas {
       canvasHeight,
       this.textColor,
     );
-    c.fillStyle = this.secondaryColor;
+    c.fillStyle = this.accentColor;
     c.textAlign = 'start';
     if (this.transparentBg) {
       c.globalCompositeOperation = 'destination-out';
@@ -181,11 +174,6 @@ export default class LogoCanvas {
     const tSwitch = document.querySelector('#transparent')! as HTMLInputElement;
     tSwitch.addEventListener('change', () => {
       this.transparentBg = tSwitch.checked;
-      this.draw();
-    });
-    const scSwitch = document.querySelector('#swap-colors')! as HTMLInputElement;
-    scSwitch.addEventListener('change', () => {
-      this.swapColors = scSwitch.checked;
       this.draw();
     });
     const dSwitch = document.querySelector('#dark-mode')! as HTMLInputElement;
