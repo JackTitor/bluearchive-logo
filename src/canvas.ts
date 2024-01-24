@@ -213,7 +213,6 @@ export default class LogoCanvas {
     navigator.clipboard
       .write(cp)
       .then(() => {
-        console.log('image copied');
         const msg = document.querySelector('#message-switch') as HTMLInputElement;
         msg.checked = true;
         setTimeout(() => (msg.checked = false), 2000);
