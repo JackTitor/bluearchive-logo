@@ -11,8 +11,7 @@ Used fonts:
 [Wêlai Glow Sans Heavy](https://github.com/welai/glow-sans)
 
 ## Build
-- `npm install typescript`
-- `npm run build`
+- `npm install && npm run build`
 
 ## Run locally
 - `npm run preview`
