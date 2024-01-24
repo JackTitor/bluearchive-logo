@@ -11,7 +11,7 @@ const {
   paddingX,
   hollowPath,
 } = settings;
-const font = `${fontSize}px RoGSanSrfStd-Bd, GlowSansSC-Normal-Heavy_diff, apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif`;
+const font = `${fontSize}px RoGSanSrfStd-Bd`;
 
 export default class LogoCanvas {
   public canvas: HTMLCanvasElement;
