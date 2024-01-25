@@ -134,6 +134,7 @@ export default class LogoCanvas {
       canvasHeight,
       this.accentColor,
     );
+    this.canvas.style.backgroundColor = this.backgroundColor;
   }
   private drawSVG(c: CanvasRenderingContext2D, paths: string[], x: number, y: number, w: number, h: number, color: string) {
     const path = new Path2D();
