@@ -77,7 +77,7 @@ export default class LogoCanvas {
     }
     //blue text -> halo -> black text -> cross
     c.font = font;
-    c.fillStyle = this.textColor;
+    c.fillStyle = this.accentColor;
     c.textAlign = 'end';
     c.setTransform(1, 0, horizontalTilt, 1, 0, 0);
     c.fillText(this.textL, this.canvasWidthL, this.canvas.height * textBaseLine);
@@ -91,7 +91,7 @@ export default class LogoCanvas {
       canvasHeight,
       this.textColor,
     );
-    c.fillStyle = this.accentColor;
+    c.fillStyle = this.textColor;
     c.textAlign = 'start';
     if (this.transparentBg) {
       c.globalCompositeOperation = 'destination-out';
