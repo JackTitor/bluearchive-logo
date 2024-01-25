@@ -8,7 +8,7 @@ const {
   subtitleFontSize,
   horizontalTilt,
   textBaseLine,
-  graphOffset,
+  baseGraphOffset,
   paddingX,
   hollowPath,
 } = settings;
@@ -29,7 +29,7 @@ export default class LogoCanvas {
   private textWidthL = 0;
   private textWidthR = 0;
   private textWidthST = 0;
-  private graphOffset = graphOffset;
+  private graphOffset = { ...baseGraphOffset };
   private accentColor = '#128AFA';
   private transparentBg = false;
   private darkMode = false;
@@ -115,7 +115,7 @@ export default class LogoCanvas {
     c.fillText(this.subtitle, this.canvasWidthL + this.textWidthR + subtitleFontSize, this.canvas.height * textBaseLine + subtitleFontSize + 5);
     c.resetTransform();
     const graph = {
-      X: this.canvasWidthL - this.canvas.height / 2 + graphOffset.X,
+      X: this.canvasWidthL - this.canvas.height / 2 + this.graphOffset.X,
       Y: this.graphOffset.Y,
     };
     c.beginPath();
@@ -139,7 +139,7 @@ export default class LogoCanvas {
     this.drawSVG(
       c,
       window.cross,
-      this.canvasWidthL - this.canvas.height / 2 + graphOffset.X,
+      this.canvasWidthL - this.canvas.height / 2 + this.graphOffset.X,
       this.graphOffset.Y,
       canvasHeight,
       canvasHeight,
@@ -201,11 +201,15 @@ export default class LogoCanvas {
     const gx = document.querySelector('#graphX')! as HTMLInputElement;
     const gy = document.querySelector('#graphY')! as HTMLInputElement;
     gx.addEventListener('input', () => {
-      this.graphOffset.X = parseInt(gx.value);
+      this.graphOffset.X = baseGraphOffset.X + parseInt(gx.value);
+      console.log(`this.graphOffset.X: ${this.graphOffset.X}`);
+      console.log(`baseGraphOffset.X: ${baseGraphOffset.X}`);
       this.draw();
     });
     gy.addEventListener('input', () => {
-      this.graphOffset.Y = parseInt(gy.value);
+      this.graphOffset.Y = baseGraphOffset.Y + parseInt(gy.value);
+      console.log(`this.graphOffset.Y: ${this.graphOffset.Y}`);
+      console.log(`baseGraphOffset.Y: ${baseGraphOffset.Y}`);
       this.draw();
     });
   }
